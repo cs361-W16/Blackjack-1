@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>CS361</groupId>
-  <artifactId>CS361</artifactId>
+  <groupId>cs361</groupId>
+  <artifactId>Assignment1</artifactId>
   <version>1.0-SNAPSHOT</version>
   <url>http://www.ninjaframework.org</url>
   <build>
@@ -135,7 +135,7 @@
     <dependency>
       <groupId>org.ninjaframework</groupId>
       <artifactId>ninja-test-utilities</artifactId>
-      <version>5.3.1</version>
+      <version>5.2.2</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -170,7 +170,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <ninja.version>5.3.1</ninja.version>
+    <ninja.version>5.2.2</ninja.version>
     <jetty.version>9.2.10.v20150310</jetty.version>
   </properties>
 </project>
