@@ -12,13 +12,15 @@ import java.io.Serializable;
 public class Card implements Serializable {
     public final int value;
     public final Suit suit;
+    public boolean faceUp;
 
     @JsonCreator
-    public Card(@JsonProperty("value") int value, @JsonProperty("suit") Suit suit) {
+    public Card(@JsonProperty("value") int value, @JsonProperty("suit") Suit suit, @JsonProperty("faceUp") boolean faceUp) {
         this.value = value;
         this.suit = suit;
-
+        this.faceUp=faceUp;
     }
+
 
     public Suit getSuit() {
         return suit;
