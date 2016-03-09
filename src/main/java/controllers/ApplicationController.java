@@ -38,36 +38,31 @@ public class ApplicationController {
     
     public Result gameGet(){
         Game g = new Game();
-        g.mode=1;
+
         g.buildDeck();
         g.shuffle();
-        g.dealFour();
 
         return Results.json().render(g);
     }
 
     public Result dealPost(Context context, Game g) {
         if(context.getRequestPath().contains("deal")){
-            g.dealFour();
         }
         return Results.json().render(g);
     }
 
     public Result newGame(Context context, @PathParam("modeNum") int modeNum, Game g) {
 
-        g.mode=modeNum;
-        g.refresh();
-
         return Results.json().render(g);
     }
 
     public Result removeCard(Context context, @PathParam("column") int colNumber, Game g){
-        g.remove(colNumber);
+
         return  Results.json().render(g);
     }
 
     public Result moveCard(Context context, @PathParam("columnFrom") int colFrom, @PathParam("columnTo") int colTo, Game g){
-        g.move(colFrom,colTo);
+
         return  Results.json().render(g);
     }
 
