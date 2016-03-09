@@ -21,6 +21,4 @@ abstract public class Player {
         return true;
     }
 
-
-
 }
