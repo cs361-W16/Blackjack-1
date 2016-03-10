@@ -16,6 +16,8 @@ public class Game {
 
     public int pot;
     public int ante;
+    public int totalCash;
+
 
 
     public String errorCode;
