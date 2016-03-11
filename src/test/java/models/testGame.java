@@ -3,6 +3,7 @@ package models;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -25,15 +26,28 @@ public class testGame {
 
     }
 
-    @Test
-    public void testHit(){
+    @Test //test if the col size increase after hitting
+    public void testColSizeAfterHit(){
         Game g = new Game();
         User u = new User();
         u.hostGame = g;
         java.util.List<Card> dealtCol= new ArrayList<Card>();
-        u.hit(20, dealtCol);
+        Boolean isStay = false;
+        u.hit(dealtCol, isStay, 1);
 
         assertEquals(1, dealtCol.size());
+    }
+
+    @Test //test if user can hit when isStay is true
+    public void testisStayForHit() {
+        Game g = new Game();
+        User u = new User();
+        u.hostGame = g;
+        java.util.List<Card> dealtCol= new ArrayList<Card>();
+        Boolean isStay = false;
+        u.hit(dealtCol, isStay, 1);
+
+        assertEquals(false, u.isBusted);
     }
 
     @Test
@@ -41,9 +55,16 @@ public class testGame {
         Game g = new Game();
         User u = new User();
         u.hostGame = g;
-        String result = u.stay(21);
+        Card card1 = new Card(8, Suit.Clubs, true);
+        Card card2 = new Card(10, Suit.Diamonds, true);
+        g.cols.add(new ArrayList<Card>());
+        g.dealCardToCol(0,card1);
+        g.dealCardToCol(0,card2);
 
-        assertEquals("false", result);
+
+        Boolean result = u.stay(0);
+
+        assertEquals(true, result);
     }
 
     @Test
