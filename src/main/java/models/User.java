@@ -37,6 +37,7 @@ public class User extends Player {
     public void hit(java.util.List<Card> dealtCol, Boolean isStay, int col){
 
         int cardValue = hostGame.colScore(col);
+        User u = new User();
 
         if (cardValue > 21) { //if card value is > 21
             errorCode="You hand has already busted!";
@@ -48,7 +49,7 @@ public class User extends Player {
             isBusted = false;
 
         }
-        else { //else deal a card
+        else if (u.hostGame.didBet == true) { //else deal a card
             Card newCard = hostGame.drawCard();
             dealtCol.add(newCard);
             hostGame.cols.add(dealtCol);
@@ -62,7 +63,7 @@ public class User extends Player {
         User u = new User();
         int cardValue = hostGame.colScore(col);
 
-        if (cardValue < 21) {
+        if (cardValue < 21 && u.hostGame.didBet == true ) {
             u.hostGame.isStay = true;
         }
         else {
@@ -74,10 +75,13 @@ public class User extends Player {
     }
 
     public int doubleDown(int moneyOnBet){
-        int newMoney = 0;
-        newMoney = moneyOnBet *2;   //double the money on bet
-        return newMoney;
-
+        User u = new User();
+        if(u.hostGame.didBet == true){
+            int newMoney = 0;
+            newMoney = moneyOnBet *2;   //double the money on bet
+            return newMoney;
+        }
+        return 0;
     }
 
     public void split(Card card1, Card card2, java.util.List<Card> dealtCol){
