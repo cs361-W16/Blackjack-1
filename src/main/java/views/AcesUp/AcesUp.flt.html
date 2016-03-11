@@ -72,6 +72,7 @@
                 <td><button id="ddown" onclick="DoubleDownFunction" class="menuButton">DOUBLE DOWN</button></td>
                 <td><button id="split" onclick="SplitFunction" class="menuButton">SPLIT</button></td>
                 <td><button id="stay" onclick="StayFunction" class="menuButton">STAY</button></td>
+                <td><button id="betting" onclick = "userBet">BET</button><BR><input type="text" id="bet"></td>
             </tr>
             <tr><td>Blackjack Simulator 1.0</td></tr>
         </table>
@@ -152,16 +153,6 @@ dataType:"json",
 
 }
 
-$("#AmDeck").click(function(){
-    changeMode(1);
-});
-$("#SpanDeck").click(function(){
-    changeMode(2);
-});
-
-
-
-
 $("#dealButton").click(function(){
 $.ajax({
   type: "POST",
@@ -176,10 +167,11 @@ $.ajax({
 });
 
 
-function removeCard(colNumber){
+$("#userBet").click(function(){
+var bet = $("bet").val();
 $.ajax({
 type: "POST",
-url: "/removeCard/"+colNumber,
+url: "/userBet/"+bet,
 data: JSON.stringify(game),
 success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
 game = data;
@@ -187,38 +179,7 @@ display(data);},
 contentType:"application/json; charset=utf-8",
 dataType:"json",
 });
-
 }
-
-
-$("#Remove1").click(function(){
-    removeCard(0);
-});
-$("#Remove2").click(function(){
-    removeCard(1);
-});
-$("#Remove3").click(function(){
-    removeCard(2);
-});
-$("#Remove4").click(function(){
-    removeCard(3);
-});
-
-
-$("#moveButton").click(function(){
-var colFrom = $("#from_col").val();
-var colTo = $("#to_col").val();
-$.ajax({
-  type: "POST",
-  url: "/moveCard/"+colFrom+"/"+colTo,
-  data: JSON.stringify(game),
-  success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
-        game = data;
-        display(data);},
-  contentType:"application/json; charset=utf-8",
-  dataType:"json",
-});
-});
 
 
 </script>

@@ -65,5 +65,8 @@ public class ApplicationController {
 
         return  Results.json().render(g);
     }
-
+    public Result userBet(Context context, @PathParam("bet") int stakeInPot, Game g){
+        g.bet = stakeInPot;
+        return Results.json().render(g);
+    }
 }
