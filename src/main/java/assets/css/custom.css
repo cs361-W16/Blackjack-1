@@ -60,7 +60,7 @@ input[type="text"] {
 #largeTable {
     display: inline-block;
     width: 560px;
-    float: left;
+    align:"center";
    }
 
 
@@ -153,7 +153,7 @@ button {
     position: relative;
     /*background-color: red;*/
     width: 130px;
-    height: 500px;
+    height: 50px;
 
 }
 .menuclass{
