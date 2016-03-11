@@ -16,9 +16,9 @@ public class Game {
 
     public int pot;
     public int ante;
-    public int totalCash;
-
-
+    public int totalCash = 100;
+    public boolean playerWin;
+    public int bet;
 
     public String errorCode;
 
@@ -92,5 +92,23 @@ public class Game {
     public void newGame(){
 
     }
+    public boolean isPlayerWin() {
+        //go through the columns and check if the player has busted
+        int colPos = 0;
 
+        while (colPos < cols.size()) {
+            if (ownership.get(colPos).contentEquals(name) && colScore(colPos) <= 21) {
+                if(playerStay = true && dealerStay = true){ //if both dealer and player stayed
+                    if(colScore(1) > colScore(2) || colScore(0) > colScore(2)) //players cards value is higher than dealers
+                        playerWin = true;
+                        return playerWin;
+                }
+            }
+            else
+                playerWin = false;
+                return playerWin;
+            colPos++;
+
+        }
+    }
 }

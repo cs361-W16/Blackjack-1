@@ -7,37 +7,19 @@
 <body>
 
 <div id="container">
-    <h1>Aces Up</h1>
+    <h1>Blackjack!</h1>
 
     <div id="largeTable">
-        <table>
+        <table class="mainTable">
             <tr class="title">
-                <td>Column 0</td>
-                <td >Column 1</td>
-                <td >Column 2</td>
-                <td >Column 3</td>
+                <td>User Hand</td>
+                <td>Split</td>
+                <td></td>
+                <td>Dealer Hand</td>
             </tr>
 
-            <tr><td class="columnOfCards" id="c0">
-                <table>
-                    <tr><td class="cardLocation l0"></td></tr>
-                    <tr><td class="cardLocation l1"></td></tr>
-                    <tr><td class="cardLocation l2"></td></tr>
-                    <tr><td class="cardLocation l3"></td></tr>
-                    <tr><td class="cardLocation l4"></td></tr>
-                    <tr><td class="cardLocation l5"></td></tr>
-                    <tr><td class="cardLocation l6"></td></tr>
-                    <tr><td class="cardLocation l7"></td></tr>
-                    <tr><td class="cardLocation l8"></td></tr>
-                    <tr><td class="cardLocation l9"></td></tr>
-                    <tr><td class="cardLocation l10"></td></tr>
-                    <tr><td class="cardLocation l11"></td></tr>
-                    <tr><td class="cardLocation l12"></td></tr>
-                    <tr><td class="cardLocation l13"></td></tr>
-                    <button id="Remove1" class="remove">Remove</button>
-                </table>
-            </td>
-                <td class="columnOfCards" id="c1">
+            <tr>
+                <td class="columnOfCards" id="userHand">
                     <table>
                         <tr><td class="cardLocation l0"></td></tr>
                         <tr><td class="cardLocation l1"></td></tr>
@@ -50,13 +32,9 @@
                         <tr><td class="cardLocation l8"></td></tr>
                         <tr><td class="cardLocation l9"></td></tr>
                         <tr><td class="cardLocation l10"></td></tr>
-                        <tr><td class="cardLocation l11"></td></tr>
-                        <tr><td class="cardLocation l12"></td></tr>
-                        <tr><td class="cardLocation l13"></td></tr>
-                        <button id="Remove2" class="remove">Remove</button>
                     </table>
                 </td>
-                <td class="columnOfCards" id="c2">
+                <td class="columnOfCards" id="userSplit">
                     <table>
                         <tr><td class="cardLocation l0"></td></tr>
                         <tr><td class="cardLocation l1"></td></tr>
@@ -69,13 +47,10 @@
                         <tr><td class="cardLocation l8"></td></tr>
                         <tr><td class="cardLocation l9"></td></tr>
                         <tr><td class="cardLocation l10"></td></tr>
-                        <tr><td class="cardLocation l11"></td></tr>
-                        <tr><td class="cardLocation l12"></td></tr>
-                        <tr><td class="cardLocation l13"></td></tr>
-                        <tr><button id="Remove3" class="remove">Remove</button></tr>
                     </table>
                 </td>
-                <td class="columnOfCards" id="c3">
+                <td class="columnOfCards"></td>
+                <td class="columnOfCards" id="dealerHand">
                     <table>
                         <tr><td class="cardLocation l0"></td></tr>
                         <tr><td class="cardLocation l1"></td></tr>
@@ -88,36 +63,20 @@
                         <tr><td class="cardLocation l8"></td></tr>
                         <tr><td class="cardLocation l9"></td></tr>
                         <tr><td class="cardLocation l10"></td></tr>
-                        <tr><td class="cardLocation l11"></td></tr>
-                        <tr><td class="cardLocation l12"></td></tr>
-                        <tr><td class="cardLocation l13"></td></tr>
-                        <button id="Remove4" class="remove">Remove</button>
                     </table>
                 </td>
             </tr>
+            <tr class="menuDes">
+                <td>Cash:<textarea id="userWallet" disabled="true" width></textarea></td>
+                <td><button id="hit" onclick="HitFunction" class="menuButton">HIT</button></td>
+                <td><button id="ddown" onclick="DoubleDownFunction" class="menuButton">DOUBLE DOWN</button></td>
+                <td><button id="split" onclick="SplitFunction" class="menuButton">SPLIT</button></td>
+                <td><button id="stay" onclick="StayFunction" class="menuButton">STAY</button></td>
+                <td><button id="betting" onclick = "userBet">BET</button><BR><input type="text" id="bet"></td>
+            </tr>
+            <tr><td>Blackjack Simulator 1.0</td></tr>
         </table>
     </div>
-
-    <!-- <BR>Remove from: <button id="Remove1">Column1</button><button id="Remove2">Column2</button><button id="Remove3">Column3</button><button id="Remove4">Column4</button>
-     -->
-    <div id = "menu">
-        <h3>Menu</h3>
-        <div class="dropdown">
-            <button onclick="myFunction()" class="dropbtn">NewGame</button>
-            <div id="myDropdown" class="dropdown-content">
-                <button id="AmDeck">American Deck</button>
-                <button id="SpanDeck">Spanish Deck</button>
-            </div>
-        </div>
-        <div id="score">Score</div>
-        <br><br>
-        <textarea id="scoreBoard" disabled="true"></textarea>
-        <div id="moveBox" class = "menuclass"><button id="moveButton">Move</button><BR>from column<BR><input type="text" id="from_col"  /><BR> to <BR><input type="text" id="to_col"  /> </div>
-        <button id="dealButton">Deal</button>
-    </div>
-
-    <div id="errorCode"></div>
-
     <script>
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
@@ -166,7 +125,7 @@ $( '.columnOfCards .cardLocation' ).html("");
  $.each(game.cols[3], function( key, val ) {
         $( '#c3 .l'+key ).html(val.value + val.suit);
     });
- document.getElementById("scoreBoard").innerHTML = game.score;
+ document.getElementById("cash").innerHTML = game.totalCash;
  document.getElementById("errorCode").innerHTML = game.errorCode;
  document.getElementById("errorCode").style.color = "red";
 
@@ -176,33 +135,6 @@ $.getJSON("http://localhost:8080/game", function( data ) {
 display(data);
 game = data;
 });
-
-
-
-
-function changeMode(modeNum){
-$.ajax({
-type: "POST",
-url: "/chMode/"+modeNum,
-data: JSON.stringify(game),
-success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
-game = data;
-display(data);},
-contentType:"application/json; charset=utf-8",
-dataType:"json",
-});
-
-}
-
-$("#AmDeck").click(function(){
-    changeMode(1);
-});
-$("#SpanDeck").click(function(){
-    changeMode(2);
-});
-
-
-
 
 $("#dealButton").click(function(){
 $.ajax({
@@ -232,37 +164,21 @@ dataType:"json",
 
 }
 
-
-$("#Remove1").click(function(){
-    removeCard(0);
-});
-$("#Remove2").click(function(){
-    removeCard(1);
-});
-$("#Remove3").click(function(){
-    removeCard(2);
-});
-$("#Remove4").click(function(){
-    removeCard(3);
-});
-
-
-$("#moveButton").click(function(){
-var colFrom = $("#from_col").val();
-var colTo = $("#to_col").val();
+$("#userBet").click(function(){
+var bet = $("bet").val();
 $.ajax({
-  type: "POST",
-  url: "/moveCard/"+colFrom+"/"+colTo,
-  data: JSON.stringify(game),
-  success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
-        game = data;
-        display(data);},
-  contentType:"application/json; charset=utf-8",
-  dataType:"json",
-});
+type: "POST",
+url: "/userBet/"+bet,
+data: JSON.stringify(game),
+success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
+game = data;
+display(data);},
+contentType:"application/json; charset=utf-8",
+dataType:"json",
 });
 
 
+}
 </script>
 
 
