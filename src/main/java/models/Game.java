@@ -98,17 +98,17 @@ public class Game {
     }
 	
     String determineSuit(Card card){
-	if(card.getSuit() = Clubs):
-		Return “Clubs”;
-	Else if(card.getSuit() = Hearts):
-		Return “Hearts”;
-	Else if(card.getSuit() = Diamonds):
-		Return “Diamonds”;
-	Else if(card.getSuit() = Spades):
-		Return “Spades”;
-	Else:
-		print(“Unable to determine suit”)
+	if(card.getSuit() = Clubs){
+		Return “Clubs”;}
+	Else if(card.getSuit() = Hearts){
+		Return “Hearts”;}
+	Else if(card.getSuit() = Diamonds){
+		Return “Diamonds”;}
+	Else if(card.getSuit() = Spades){
+		Return “Spades”;}
+	Else{
 		Return “”;
+    	}
     }
 
 
