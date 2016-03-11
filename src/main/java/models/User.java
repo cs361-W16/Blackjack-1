@@ -12,7 +12,6 @@ import java.util.List;
 public class User extends Player {
 
     public String errorCode;
-    public Boolean isStay = false;
     public Boolean isBusted = false;
     public Boolean isSplit = false;
     public int cardValue;
@@ -20,6 +19,7 @@ public class User extends Player {
 
 
     public void initialDeal(){
+        User u = new User();
         Card card1=hostGame.drawCard();
         Card card2=hostGame.drawCard();
         java.util.List<Card> dealtCol= new ArrayList<Card>();
@@ -27,7 +27,7 @@ public class User extends Player {
         dealtCol.add(card2);
         hostGame.cols.add(dealtCol);
         hostGame.ownership.add(name);
-        isStay = false;
+        u.hostGame.isStay = false;
     }
 
     public User(){
@@ -58,19 +58,19 @@ public class User extends Player {
 
     }
 
-    public Boolean stay(int col){
-
+    public boolean stay(int col){
+        User u = new User();
         int cardValue = hostGame.colScore(col);
 
         if (cardValue < 21) {
-            isStay = true;
+            u.hostGame.isStay = true;
         }
         else {
             errorCode = "Your hand has already busted.";
-            isStay = false;
+            u.hostGame.isStay = false;
         }
 
-        return isStay;
+        return u.hostGame.isStay;
     }
 
     public int doubleDown(int moneyOnBet){
@@ -81,11 +81,11 @@ public class User extends Player {
     }
 
     public void split(Card card1, Card card2, java.util.List<Card> dealtCol){
-
+            User u = new User();
             //if both cards has the same value and user has not split yet (can only split once)
             if (card2.getValue() == card1.getValue() ) {
 
-                if (isStay.equals(false) & isSplit.equals(false)) {
+                if (u.hostGame.isStay == false & isSplit.equals(false)) {
 
                     dealtCol.remove(card2);                                     //remove card2 from initial col
                     java.util.List<Card> dealtCol2 = new ArrayList<Card>();     //create another col
@@ -108,6 +108,22 @@ public class User extends Player {
                 return;
             }
 
+    }
+
+    public int userBet(){
+        User x = new User();
+        x.hostGame.playerWin = x.hostGame.isPlayerWin();
+        if(x.hostGame.playerWin = true){
+            x.hostGame.totalCash += x.hostGame.pot;
+            return x.hostGame.totalCash;
+        }
+        else if(x.hostGame.playerWin = false){
+            x.hostGame.totalCash -= x.hostGame.pot;
+            return x.hostGame.totalCash;
+        }
+        x.hostGame.pot += (x.hostGame.bet * 2);
+        x.hostGame.didBet = true;
+        return x.hostGame.totalCash;
     }
 
 

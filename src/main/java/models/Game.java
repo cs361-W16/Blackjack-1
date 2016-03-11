@@ -18,18 +18,21 @@ public class Game {
     public int pot;
     public int ante;
     public int totalCash;
-
+    public boolean playerWin;
+    public int bet;
+    public boolean isStay;
+    public boolean didBet;
 
 
     public String errorCode;
 
-    public Game(){
+    public Game() {
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
-        ante=2;
-        errorCode=" ";
+        ante = 2;
+        errorCode = " ";
     }
 
 
@@ -50,72 +53,90 @@ public class Game {
     //customDeal to setup game for testing purposes
 
     private boolean colHasCards(int colNumber) {
-        return this.cols.get(colNumber).size()>0;
+        return this.cols.get(colNumber).size() > 0;
     }
 
     public void dealCardToCol(int colTo, Card cardToDeal) {
         cols.get(colTo).add(cardToDeal);
     }
 
-    public Card drawCard(){
-        if(deck.isEmpty()){
+    public Card drawCard() {
+        if (deck.isEmpty()) {
             buildDeck();
             shuffle();
         }
-        Card result=deck.get(deck.size()-1);
-        deck.remove(deck.size()-1);
+        Card result = deck.get(deck.size() - 1);
+        deck.remove(deck.size() - 1);
         return result;
     }
 
-    public int colScore(int col){
-        int pos=0;
-        int theScore=0;
-        int aces=0;
-        while(pos<cols.get(col).size()){
-            if(cols.get(col).get(pos).getValue()>10){
-                theScore+=10;
+    public int colScore(int col) {
+        int pos = 0;
+        int theScore = 0;
+        int aces = 0;
+        while (pos < cols.get(col).size()) {
+            if (cols.get(col).get(pos).getValue() > 10) {
+                theScore += 10;
+            } else {
+                theScore += cols.get(col).get(pos).getValue();
             }
-            else{
-                theScore+=cols.get(col).get(pos).getValue();
-            }
-            if(cols.get(col).get(pos).getValue()==1){
+            if (cols.get(col).get(pos).getValue() == 1) {
                 aces++;
             }
             pos++;
         }
-        while(theScore<=11 && aces>0){
+        while (theScore <= 11 && aces > 0) {
             aces--;
-            theScore+=10;
+            theScore += 10;
         }
         return 0;
     }
-    
-    public String getCardFromURL(Card card){
-	    String URL = "https://raw.githubusercontent.com/cs361-W16/Blackjack-1/master/src/main/java/assets/images/";
-	    int tempV = card.getValue();
-	    String tempS = determineSuit(card);
-	    URL = URL + tempV + “of” + tempS + “.png”;
-	    Return URL;
-    }
-	
-    String determineSuit(Card card){
-	if(card.getSuit() = Clubs):
-		Return “Clubs”;
-	Else if(card.getSuit() = Hearts):
-		Return “Hearts”;
-	Else if(card.getSuit() = Diamonds):
-		Return “Diamonds”;
-	Else if(card.getSuit() = Spades):
-		Return “Spades”;
-	Else:
-		print(“Unable to determine suit”)
-		Return “”;
+
+    public String getCardFromURL(Card card) {
+        String URL = "https://raw.githubusercontent.com/cs361-W16/Blackjack-1/master/src/main/java/assets/images/";
+        int tempV = card.getValue();
+        String tempS = determineSuit(card);
+        URL = URL + tempV + "of" + tempS + ".png";
+        return URL;
     }
 
-
-    public void newGame(){
-
+    String determineSuit(Card card) {
+        if (card.getSuit() == Suit.Clubs) {
+            return "Clubs";
+        } else if (card.getSuit() == Suit.Hearts) {
+            return "Hearts";
+        } else if (card.getSuit() == Suit.Diamonds) {
+            return "Diamonds";
+        } else if (card.getSuit() == Suit.Spades) {
+            return "Spades";
+        }
+        else
+            System.out.println("Unable to determine suit");
+        return "";
     }
 
 
+    public void newGame() {
+
+    }
+
+    public boolean isPlayerWin() {
+        //go through the columns and check if the player has busted
+        int colPos = 0;
+
+        while (colPos < cols.size()) {
+            if (colScore(colPos) <= 21) {
+                if (isStay = true) { //if both dealer and player stayed
+                    if (colScore(1) > colScore(2) || colScore(0) > colScore(2)) //players cards value is higher than dealers
+                        playerWin = true;
+                    return playerWin;
+                }
+            } else
+                playerWin = false;
+            colPos++;
+            return playerWin;
+        }
+        return playerWin;
+
+    }
 }

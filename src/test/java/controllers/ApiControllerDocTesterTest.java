@@ -42,7 +42,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
         assertThat(response.payload, containsString("BAM!"));
     }
 
-    Test
+    @Test
     public void testAcesUp() {
         Response response = makeRequest(
                 Request.GET().url(
