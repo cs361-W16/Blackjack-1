@@ -90,13 +90,26 @@ public class Game {
     }
     
     public String getCardFromURL(Card card){
-	    String URL =  https://raw.githubusercontent.com/cs361-W16/Blackjack-1/master/src/main/java/assets/images/”;
-	    int tempV = card.getValue().toString();
-        String =tempS = card.getSuit().toString();
-        URL = URL + tempV + “of” + tempS + “.png”;
+	    String URL =  "https://raw.githubusercontent.com/cs361-W16/Blackjack-1/master/src/main/java/assets/images/”;
+	    int tempV = card.getValue();
+	    String tempS = determineSuit(card);
+	    URL = URL + tempV + “of” + tempS + “.png”;
 	    Return URL;
     }
-
+	
+    String determineSuit(Card card){
+	if(card.getSuit() = Clubs):
+		Return “Clubs”;
+	Else if(card.getSuit() = Hearts):
+		Return “Hearts”;
+	Else if(card.getSuit() = Diamonds):
+		Return “Diamonds”;
+	Else if(card.getSuit() = Spades):
+		Return “Spades”;
+	Else:
+		print(“Unable to determine suit”)
+		Return “”;
+    }
 
 
     public void newGame(){
