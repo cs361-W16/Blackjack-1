@@ -11,95 +11,112 @@ import java.util.List;
  */
 public class User extends Player {
 
+    public User(){
+        name="User";
+    }
+
     public String errorCode;
     public Boolean isBusted = false;
+    public Boolean zeroStayed=false;
+    public Boolean oneStayed=false;
     public Boolean isSplit = false;
     public int cardValue;
     public int colPos;
 
 
     public void initialDeal(){
-        User u = new User();
         Card card1=hostGame.drawCard();
         Card card2=hostGame.drawCard();
         java.util.List<Card> dealtCol= new ArrayList<Card>();
         dealtCol.add(card1);
         dealtCol.add(card2);
         hostGame.cols.add(dealtCol);
-        hostGame.ownership.add(name);
-        u.hostGame.isStay = false;
+        hostGame.isStay = false;
     }
 
-    public User(){
-        name="User";
-    }
 
-    public void hit(java.util.List<Card> dealtCol, Boolean isStay, int col){
 
-        int cardValue = hostGame.colScore(col);
-        User u = new User();
 
-        if (cardValue > 21) { //if card value is > 21
+    public void hit(int col){
+        if(col<0 || col>1) {
+            return;
+        }
+
+
+        if (hostGame.colScore(col)>21) { //if card value is > 21
             errorCode="You hand has already busted!";
             isBusted = true;
-
         }
-        else if (isStay == true) { //if user chose to stay
+        else if ( (col==0 && zeroStayed) || (col==1 && oneStayed) ) { //if user chose to stay
             errorCode="Unable to hit: You've already chose to stay.";
             isBusted = false;
 
         }
-        else if (u.hostGame.didBet == true) { //else deal a card
+        else if (hostGame.didBet == true) { //else deal a card
             Card newCard = hostGame.drawCard();
-            dealtCol.add(newCard);
-            hostGame.cols.add(dealtCol);
-
+            hostGame.dealCardToCol(col,newCard);
         }
         errorCode=" ";
 
     }
 
-    public boolean stay(int col){
-        User u = new User();
-        int cardValue = hostGame.colScore(col);
 
-        if (cardValue < 21 && u.hostGame.didBet == true ) {
-            u.hostGame.isStay = true;
+
+    public void stay(int col){
+        if(col<0 || col>1) {
+            errorCode = "Unable to identify col";
+            return;
         }
-        else {
+        if (hostGame.colScore(col)>21) {
             errorCode = "Your hand has already busted.";
-            u.hostGame.isStay = false;
+            isBusted = true;
         }
-
-        return u.hostGame.isStay;
+        else if(col == 0 && !isBusted){
+            zeroStayed = true;
+        }
+        else if(col == 1 && !isBusted) {
+            oneStayed = true;
+        }
     }
 
     public int doubleDown(int moneyOnBet){
-        User u = new User();
-        if(u.hostGame.didBet == true){
-            int newMoney = 0;
-            newMoney = moneyOnBet *2;   //double the money on bet
-            return newMoney;
-        }
-        return 0;
+        int newMoney = 0;
+        newMoney = moneyOnBet *2;   //double the money on bet
+
+        return newMoney;
     }
 
-    public void split(Card card1, Card card2, java.util.List<Card> dealtCol){
-            User u = new User();
+    public void split(){
+
+            //check if the col to be split has only 2 cards
+            if(hostGame.cols.get(0).size()!=2){
+                return;
+            }
+
+            //check if there is already a card in the 2nd col
+            if(hostGame.cols.get(1).size()!=0){
+                return;
+            }
+
+            //get value of card1 and card2 of col
+            int card1 = hostGame.cols.get(0).get(0).getValue();
+            int card2 = hostGame.cols.get(0).get(1).getValue();
+            Card theCard2 = hostGame.cols.get(0).get(1);                //get the 2nd card from the col 0
+
+
             //if both cards has the same value and user has not split yet (can only split once)
-            if (card2.getValue() == card1.getValue() ) {
+            if (card1 == card2 ) {
 
-                if (u.hostGame.isStay == false & isSplit.equals(false)) {
+                if (!zeroStayed  || !oneStayed || !isSplit) {
 
-                    dealtCol.remove(card2);                                     //remove card2 from initial col
-                    java.util.List<Card> dealtCol2 = new ArrayList<Card>();     //create another col
-                    dealtCol2.add(card2);                                       //add to col that just created
+                    hostGame.cols.get(0).remove(1);              //remove 2nd card from col
+                    hostGame.cols.get(1).add(theCard2);          //add 2nd card to col 1
 
-                    Card newCard1 = hostGame.drawCard();                          //draw another card for both hands
+                    Card newCard1 = hostGame.drawCard();         //draw another card for both col 0 and col 1
                     Card newCard2 = hostGame.drawCard();
 
-                    dealtCol.add(newCard1);                                     //add card to cols
-                    dealtCol2.add(newCard2);
+                    hostGame.cols.get(0).add(newCard1);          //add card to cols
+                    hostGame.cols.get(1).add(newCard2);
 
                     isSplit = true;
                 }
@@ -107,7 +124,6 @@ public class User extends Player {
             }
 
             else {
-
                 errorCode = "Unable to split cards.";
                 return;
             }

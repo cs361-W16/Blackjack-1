@@ -45,9 +45,8 @@ public class ApplicationController {
         return Results.json().render(g);
     }
 
-    public Result dealPost(Context context, Game g) {
-        if(context.getRequestPath().contains("deal")){
-        }
+    public Result hitPost(Context context,  @PathParam("theCol") int theCol, Game g) {
+        g.theUser.hit(theCol);
         return Results.json().render(g);
     }
 

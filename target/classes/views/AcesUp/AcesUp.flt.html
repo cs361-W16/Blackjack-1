@@ -68,7 +68,7 @@
             </tr>
             <tr class="menuDes">
                 <td>Cash:<textarea id="userWallet" disabled="true" width></textarea></td>
-                <td><button id="hit" onclick="HitFunction" class="menuButton">HIT</button></td>
+                <td><button id="hit" onclick="HitFunction" class="menuButton">HIT</button><BR><input type="text" id="hitCol"></td>
                 <td><button id="ddown" onclick="DoubleDownFunction" class="menuButton">DOUBLE DOWN</button></td>
                 <td><button id="split" onclick="SplitFunction" class="menuButton">SPLIT</button></td>
                 <td><button id="stay" onclick="StayFunction" class="menuButton">STAY</button></td>
@@ -154,10 +154,11 @@ dataType:"json",
 
 }
 
-$("#dealButton").click(function(){
+$("#hit").click(function(){
+var theCol = $("hitCol").val();
 $.ajax({
   type: "POST",
-  url: "/dealGame",
+  url: "/hit/"+theCol,
   data: JSON.stringify(game),
   success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
         game = data;

@@ -15,6 +15,9 @@ public class Game {
     public java.util.List<String> ownership;
     public java.util.List<java.util.List<Card>> cols = new ArrayList<>();
 
+    public User theUser;
+    public Dealer theDealer;
+
     public int pot;
     public int ante;
     public int totalCash;
@@ -30,7 +33,8 @@ public class Game {
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
-        cols.add(new ArrayList<Card>());
+        theUser=new User();
+        theDealer=new Dealer();
         ante = 2;
         errorCode = " ";
     }
@@ -89,7 +93,7 @@ public class Game {
             aces--;
             theScore += 10;
         }
-        return 0;
+        return theScore;
     }
 
     public String getCardFromURL(Card card) {
