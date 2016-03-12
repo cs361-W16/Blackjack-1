@@ -36,10 +36,12 @@ public class User extends Player {
 
 
 
+
     public void hit(int col){
         if(col<0 || col>1) {
             return;
         }
+
 
         if (hostGame.colScore(col)>21) { //if card value is > 21
             errorCode="You hand has already busted!";
@@ -50,13 +52,14 @@ public class User extends Player {
             isBusted = false;
 
         }
-        else { //else deal a card
+        else if (hostGame.didBet == true) { //else deal a card
             Card newCard = hostGame.drawCard();
             hostGame.dealCardToCol(col,newCard);
         }
         errorCode=" ";
 
     }
+
 
 
     public void stay(int col){
