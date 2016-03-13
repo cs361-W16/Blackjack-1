@@ -21,6 +21,7 @@ public class Game implements Serializable {
     public int totalCash=100;
     public boolean playerWin = false;
     public boolean isStay;
+    public int pot;
 
     public String errorCode;
 
@@ -102,11 +103,12 @@ public class Game implements Serializable {
             return totalCash;
         }
         else if (playerWin) {
-            totalCash += bet;
+            totalCash += pot;
             theUser.didBet = true;
             return totalCash;
         } else {
             totalCash -= bet;
+            pot += bet*2;
             theUser.didBet = true;
             return totalCash;
         }

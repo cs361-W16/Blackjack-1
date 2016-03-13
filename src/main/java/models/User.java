@@ -71,11 +71,9 @@ public class User extends Player implements Serializable{
         if(!isBusted(col)) {
             if(col==0){
                 zeroStayed = true;
-                didBet = false;
             }
             else {
                 oneStayed = true;
-                didBet = false;
             }
         }
         return " ";
