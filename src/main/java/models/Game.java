@@ -32,10 +32,24 @@ public class Game implements Serializable {
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
-        theUser=new User(this);
-        theDealer=new Dealer(this);
+
+        java.util.List<java.util.List<Card>> userCols = new ArrayList<>();
+        java.util.List<Card> userDeck = new ArrayList<>();
+        userCols.add(cols.get(0));
+        userCols.add(cols.get(1));
+        userDeck=deck;
+
+        theUser=new User(userCols,userDeck);
+
+        java.util.List<java.util.List<Card>> dealerCols = new ArrayList<>();
+        java.util.List<Card> dealerDeck = new ArrayList<>();
+        userCols.add(cols.get(2));
+        userDeck=deck;
+
+        theDealer=new Dealer(dealerCols,dealerDeck);
+
         ante = 2;
-        errorCode = " ";
+        errorCode = "BLUH";
     }
 
 
@@ -55,45 +69,7 @@ public class Game implements Serializable {
 
     //customDeal to setup game for testing purposes
 
-    private boolean colHasCards(int colNumber) {
-        return this.cols.get(colNumber).size() > 0;
-    }
 
-    public void dealCardToCol(int colTo, Card cardToDeal) {
-        cols.get(colTo).add(cardToDeal);
-    }
-
-    public Card drawCard() {
-        if (deck.isEmpty()) {
-            buildDeck();
-            shuffle();
-        }
-        Card result = deck.get(deck.size() - 1);
-        deck.remove(deck.size() - 1);
-        return result;
-    }
-
-    public int colScore(int col) {
-        int pos = 0;
-        int theScore = 0;
-        int aces = 0;
-        while (pos < cols.get(col).size()) {
-            if (cols.get(col).get(pos).getValue() > 10) {
-                theScore += 10;
-            } else {
-                theScore += cols.get(col).get(pos).getValue();
-            }
-            if (cols.get(col).get(pos).getValue() == 1) {
-                aces++;
-            }
-            pos++;
-        }
-        while (theScore <= 11 && aces > 0) {
-            aces--;
-            theScore += 10;
-        }
-        return 0;
-    }
 
     public String getCardFromURL(Card card) {
         String URL = "https://raw.githubusercontent.com/cs361-W16/Blackjack-1/master/src/main/java/assets/images/";
@@ -124,22 +100,15 @@ public class Game implements Serializable {
     }
 
     public boolean isPlayerWin() {
-        //go through the columns and check if the player has busted
-        int colPos = 0;
 
-        while (colPos < cols.size()) {
-            if (colScore(colPos) <= 21) {
-                if (isStay = true) { //if both dealer and player stayed
-                    if (colScore(1) > colScore(2) || colScore(0) > colScore(2)) //players cards value is higher than dealers
-                        playerWin = true;
-                    return playerWin;
-                }
-            } else
-                playerWin = false;
-            colPos++;
-            return playerWin;
+        if ( isStay && (
+                        (theUser.colScore(0)<=21 && theUser.colScore(0) > theDealer.colScore(0)) ||
+                        (theUser.colScore(1)<=21 && theUser.colScore(1) > theDealer.colScore(0)))
+                        ) {
+            return true;
         }
-        return playerWin;
-
+        else
+            return false;
     }
+
 }

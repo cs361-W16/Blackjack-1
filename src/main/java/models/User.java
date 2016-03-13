@@ -10,122 +10,144 @@ import java.util.List;
 /**
  * Created by Braxton on 3/8/2016.
  */
-public class User extends Player implements Serializable {
+public class User extends Player implements Serializable{
 
-    public String errorCode;
-    public Boolean zeroIsStayed = false;
-    public Boolean oneIsStayed = false;
+    public Boolean zeroStayed=false;
+    public Boolean oneStayed=false;
     public Boolean isSplit = false;
     public int cardValue;
     public int colPos;
 
 
     public void initialDeal(){
-        Card card1=hostGame.drawCard();
-        Card card2=hostGame.drawCard();
-        hostGame.isStay = false;
+        Card card1= drawCard();
+        Card card2= drawCard();
+        zeroStayed = false;
+        dealCardToCol(0,card1);
+        dealCardToCol(0,card2);
     }
 
     public boolean isBusted(int col){
-        return hostGame.colScore(col)>21;
+        return  colScore(col)>21;
     }
 
     public boolean loses (){
         return isBusted(0) && isBusted (1);
     }
 
-    public void hit(java.util.List<Card> dealtCol, Boolean isStay, int col){
-
-        int cardValue = hostGame.colScore(col);
-
-        if (cardValue > 21) { //if card value is > 21
-            errorCode="You hand has already busted!";
-            //isBusted = true;
-
+    public String hit(int col){
+        if(col<0 || col>1) {
+            return "Invalid column";
         }
-        else if (isStay == true) { //if user chose to stay
-            errorCode="Unable to hit: You've already chose to stay.";
+
+
+        if ( colScore(col)>21) { //if card value is > 21
+             return "You hand has already busted!";
+        }
+
+        else if ( (col==0 && zeroStayed) || (col==1 && oneStayed) ) { //if user chose to stay
+             return "Unable to hit: You've already chose to stay.";
             //isBusted = false;
 
         }
         else { //else deal a card
-            Card newCard = hostGame.drawCard();
-            dealtCol.add(newCard);
-            hostGame.cols.add(dealtCol);
-
+            Card newCard =  drawCard();
+             dealCardToCol(col,newCard);
         }
-        errorCode=" ";
+         return " ";
 
     }
 
-    public boolean stay(int col){
-        int cardValue = hostGame.colScore(col);
 
-        if (cardValue < 21) {
-            hostGame.isStay = true;
-        }
-        else {
-            errorCode = "Your hand has already busted.";
-            hostGame.isStay = false;
-        }
 
-        return hostGame.isStay;
+    public String stay(int col){
+        if(col<0 || col>1) {
+            return "Unable to identify col";
+        }
+        if ( colScore(col)>21) {
+            return "Your hand has already busted.";
+        }
+        if(!isBusted(col)) {
+            if(col==0){
+                zeroStayed = true;
+            }
+            else {
+                oneStayed = true;
+            }
+        }
+        return " ";
     }
 
     public int doubleDown(int moneyOnBet){
         int newMoney = 0;
         newMoney = moneyOnBet *2;   //double the money on bet
-        return newMoney;
 
+        return newMoney;
     }
 
-    public void split(Card card1, Card card2, java.util.List<Card> dealtCol){
-            //if both cards has the same value and user has not split yet (can only split once)
-            if (card2.getValue() == card1.getValue() ) {
+    public String split(){
 
-                if (hostGame.isStay == false & isSplit.equals(false)) {
-
-                    dealtCol.remove(card2);                                     //remove card2 from initial col
-                    java.util.List<Card> dealtCol2 = new ArrayList<Card>();     //create another col
-                    dealtCol2.add(card2);                                       //add to col that just created
-
-                    Card newCard1 = hostGame.drawCard();                          //draw another card for both hands
-                    Card newCard2 = hostGame.drawCard();
-
-                    dealtCol.add(newCard1);                                     //add card to cols
-                    dealtCol2.add(newCard2);
-
-                    isSplit = true;
-                }
-
+            //check if the col to be split has only 2 cards
+            if( cols.get(0).size()!=2){
+                return " ";
             }
+
+            //check if there is already a card in the 2nd col
+            if( cols.get(1).size()!=0){
+                return " ";
+            }
+
+            //get value of card1 and card2 of col
+            int val1 =  cols.get(0).get(0).getValue();
+            int val2 =  cols.get(0).get(1).getValue();               //get the 2nd card from the col 0
+
+            //if both cards has the same value and user has not split yet (can only split once)
+
+            if ( val1==val2 || !zeroStayed  || !oneStayed || !isSplit) {
+
+                 dealCardToCol(1, cols.get(0).get(1));     //add 2nd card to col 1
+                 cols.get(0).remove(1);              //remove 2nd card from col
+
+                Card newCard1 =  drawCard();         //draw another card for both col 0 and col 1
+                Card newCard2 =  drawCard();
+
+                 cols.get(0).add(newCard1);          //add card to cols
+                 cols.get(1).add(newCard2);
+
+                isSplit = true;
+            }
+
 
             else {
-
-                errorCode = "Unable to split cards.";
-                return;
+                return "Unable to split cards.";
             }
 
+        return " ";
     }
 
-    public int userBet(){
-        hostGame.playerWin = hostGame.isPlayerWin();
-        if(hostGame.playerWin = true){
-            hostGame.totalCash += hostGame.pot;
-            return hostGame.totalCash;
+    /**public int userBet(){
+         playerWin =  isPlayerWin();
+        if( playerWin = true){
+             totalCash +=  pot;
+            return  totalCash;
         }
-        else if(hostGame.playerWin = false){
-            hostGame.totalCash -= hostGame.pot;
-            return hostGame.totalCash;
+        else if( playerWin = false){
+             totalCash -=  pot;
+            return  totalCash;
         }
-        hostGame.pot += (hostGame.bet * 2);
-        hostGame.didBet = true;
-        return hostGame.totalCash;
-    }
+         pot += ( bet * 2);
+         didBet = true;
+        return  totalCash;
+    }**/
 
 
-    public User (Game g){
-        hostGame=g;
+    public User(java.util.List<java.util.List<Card>> Cols, java.util.List<Card> Deck ){
+        cols=Cols;
+        deck=Deck;
+        oneStayed=false;
+        zeroStayed=false;
     }
+
+    public User (){}
 
 }

@@ -45,16 +45,36 @@ public class ApplicationController {
         return Results.json().render(g);
     }
 
-    public Result dealPost(Context context, Game g) {
-        if(context.getRequestPath().contains("deal")){
-        }
+    public Result hitPost(Context context,  @PathParam("theCol") int theCol, Game g) {
+        g.theUser.hit(theCol);
+        g.errorCode="Tried to Hit";
         return Results.json().render(g);
     }
 
-    public Result newGame(Context context, @PathParam("modeNum") int modeNum, Game g) {
-
+    public Result stayPost(Context context,  @PathParam("theCol") int theCol, Game g) {
+        g.theUser.stay(theCol);
+        g.errorCode="Tried to Stay";
         return Results.json().render(g);
     }
+
+    public Result ddownPost(Context context,  @PathParam("theCol") int theCol, Game g) {
+        //g.theUser.doubleDown(theCol);
+        g.errorCode="Tried to double down";
+        return Results.json().render(g);
+    }
+
+    public Result splitPost(Context context, Game g) {
+        g.theUser.split();
+        g.errorCode="Tried to split";
+        return Results.json().render(g);
+    }
+
+    public Result userBet(Context context, @PathParam("bet") int stakeInPot, Game g){
+        g.bet = stakeInPot;
+        g.errorCode="Tried to bet";
+        return Results.json().render(g);
+    }
+
 
     public Result removeCard(Context context, @PathParam("column") int colNumber, Game g){
 
@@ -65,8 +85,5 @@ public class ApplicationController {
 
         return  Results.json().render(g);
     }
-    public Result userBet(Context context, @PathParam("bet") int stakeInPot, Game g){
-        g.bet = stakeInPot;
-        return Results.json().render(g);
-    }
+
 }
