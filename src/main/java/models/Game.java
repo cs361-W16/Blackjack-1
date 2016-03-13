@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,16 +9,17 @@ import java.util.Random;
 /**
  * Created by michaelhilton on 1/25/16.
  */
-public class Game {
+public class Game implements Serializable {
 
     public java.util.List<Card> deck = new ArrayList<>();
-
-    public java.util.List<String> ownership;
     public java.util.List<java.util.List<Card>> cols = new ArrayList<>();
+
+    public User theUser;
+    public Dealer theDealer;
 
     public int pot;
     public int ante;
-    public int totalCash;
+    public int totalCash=100;
     public boolean playerWin;
     public int bet;
     public boolean isStay;
@@ -30,7 +32,8 @@ public class Game {
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
-        cols.add(new ArrayList<Card>());
+        theUser=new User(this);
+        theDealer=new Dealer(this);
         ante = 2;
         errorCode = " ";
     }

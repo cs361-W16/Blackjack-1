@@ -2,6 +2,7 @@ package models;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,29 +10,28 @@ import java.util.List;
 /**
  * Created by Braxton on 3/8/2016.
  */
-public class User extends Player {
+public class User extends Player implements Serializable {
 
     public String errorCode;
-    public Boolean isBusted = false;
+    public Boolean zeroIsStayed = false;
+    public Boolean oneIsStayed = false;
     public Boolean isSplit = false;
     public int cardValue;
     public int colPos;
 
 
     public void initialDeal(){
-        User u = new User();
         Card card1=hostGame.drawCard();
         Card card2=hostGame.drawCard();
-        java.util.List<Card> dealtCol= new ArrayList<Card>();
-        dealtCol.add(card1);
-        dealtCol.add(card2);
-        hostGame.cols.add(dealtCol);
-        hostGame.ownership.add(name);
-        u.hostGame.isStay = false;
+        hostGame.isStay = false;
     }
 
-    public User(){
-        name="User";
+    public boolean isBusted(int col){
+        return hostGame.colScore(col)>21;
+    }
+
+    public boolean loses (){
+        return isBusted(0) && isBusted (1);
     }
 
     public void hit(java.util.List<Card> dealtCol, Boolean isStay, int col){
@@ -40,12 +40,12 @@ public class User extends Player {
 
         if (cardValue > 21) { //if card value is > 21
             errorCode="You hand has already busted!";
-            isBusted = true;
+            //isBusted = true;
 
         }
         else if (isStay == true) { //if user chose to stay
             errorCode="Unable to hit: You've already chose to stay.";
-            isBusted = false;
+            //isBusted = false;
 
         }
         else { //else deal a card
@@ -59,18 +59,17 @@ public class User extends Player {
     }
 
     public boolean stay(int col){
-        User u = new User();
         int cardValue = hostGame.colScore(col);
 
         if (cardValue < 21) {
-            u.hostGame.isStay = true;
+            hostGame.isStay = true;
         }
         else {
             errorCode = "Your hand has already busted.";
-            u.hostGame.isStay = false;
+            hostGame.isStay = false;
         }
 
-        return u.hostGame.isStay;
+        return hostGame.isStay;
     }
 
     public int doubleDown(int moneyOnBet){
@@ -81,11 +80,10 @@ public class User extends Player {
     }
 
     public void split(Card card1, Card card2, java.util.List<Card> dealtCol){
-            User u = new User();
             //if both cards has the same value and user has not split yet (can only split once)
             if (card2.getValue() == card1.getValue() ) {
 
-                if (u.hostGame.isStay == false & isSplit.equals(false)) {
+                if (hostGame.isStay == false & isSplit.equals(false)) {
 
                     dealtCol.remove(card2);                                     //remove card2 from initial col
                     java.util.List<Card> dealtCol2 = new ArrayList<Card>();     //create another col
@@ -111,20 +109,23 @@ public class User extends Player {
     }
 
     public int userBet(){
-        User x = new User();
-        x.hostGame.playerWin = x.hostGame.isPlayerWin();
-        if(x.hostGame.playerWin = true){
-            x.hostGame.totalCash += x.hostGame.pot;
-            return x.hostGame.totalCash;
+        hostGame.playerWin = hostGame.isPlayerWin();
+        if(hostGame.playerWin = true){
+            hostGame.totalCash += hostGame.pot;
+            return hostGame.totalCash;
         }
-        else if(x.hostGame.playerWin = false){
-            x.hostGame.totalCash -= x.hostGame.pot;
-            return x.hostGame.totalCash;
+        else if(hostGame.playerWin = false){
+            hostGame.totalCash -= hostGame.pot;
+            return hostGame.totalCash;
         }
-        x.hostGame.pot += (x.hostGame.bet * 2);
-        x.hostGame.didBet = true;
-        return x.hostGame.totalCash;
+        hostGame.pot += (hostGame.bet * 2);
+        hostGame.didBet = true;
+        return hostGame.totalCash;
     }
 
+
+    public User (Game g){
+        hostGame=g;
+    }
 
 }

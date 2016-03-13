@@ -67,14 +67,17 @@
                 </td>
             </tr>
             <tr class="menuDes">
-                <td>Cash:<textarea id="userWallet" disabled="true" width></textarea></td>
+                <td>Cash:<div id="cash" style="background-color:black; color:white; padding:20px;">100</div></td>
                 <td><button id="hit" onclick="HitFunction" class="menuButton">HIT</button></td>
                 <td><button id="ddown" onclick="DoubleDownFunction" class="menuButton">DOUBLE DOWN</button></td>
                 <td><button id="split" onclick="SplitFunction" class="menuButton">SPLIT</button></td>
                 <td><button id="stay" onclick="StayFunction" class="menuButton">STAY</button></td>
-                <td><button id="betting" onclick = "userBet">BET</button><BR><input type="text" id="bet"></td>
+                <td><button id="userBet">BET</button><BR><input type="text" id="bet"></td>
             </tr>
-            <tr><td>Blackjack Simulator 1.0</td></tr>
+            <tr>
+                <td>Blackjack Simulator 1.0</td>
+                <td id="errorCode"> </td>
+            </tr>
         </table>
     </div>
     <script>
@@ -122,9 +125,7 @@ $( '.columnOfCards .cardLocation' ).html("");
         $( '#c2 .l'+key ).html(val.value + val.suit);
     });
 
- $.each(game.cols[3], function( key, val ) {
-        $( '#c3 .l'+key ).html(val.value + val.suit);
-    });
+
  document.getElementById("cash").innerHTML = game.totalCash;
  document.getElementById("errorCode").innerHTML = game.errorCode;
  document.getElementById("errorCode").style.color = "red";
@@ -153,7 +154,7 @@ dataType:"json",
 
 }
 
-$("#dealButton").click(function(){
+$("dealButton").click(function(){
 $.ajax({
   type: "POST",
   url: "/dealGame",
@@ -167,19 +168,19 @@ $.ajax({
 });
 
 
-$("#userBet").click(function(){
+$("userBet").click(function(){
 var bet = $("bet").val();
 $.ajax({
-type: "POST",
-url: "/userBet/"+bet,
-data: JSON.stringify(game),
-success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
-game = data;
-display(data);},
-contentType:"application/json; charset=utf-8",
-dataType:"json",
+    type: "POST",
+    url: "/userBet/"+bet,
+    data: JSON.stringify(game),
+    success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
+        game = data;
+        display(data);},
+    contentType:"application/json; charset=utf-8",
+    dataType:"json",
 });
-}
+});
 
 
 </script>

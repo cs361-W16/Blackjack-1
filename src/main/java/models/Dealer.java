@@ -1,37 +1,35 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Braxton on 3/8/2016.
  */
-public class Dealer extends Player {
+public class Dealer extends Player implements Serializable {
 
     public void initialDeal(){
         Card card1=hostGame.drawCard();
         Card card2=hostGame.drawCard();
         card1.faceUp=false;
-        java.util.List<Card> dealtCol= new ArrayList<Card>();
-        dealtCol.add(card1);
-        dealtCol.add(card2);
-        hostGame.cols.add(dealtCol);
-        hostGame.ownership.add(name);
+        hostGame.dealCardToCol(2,card1);
+        hostGame.dealCardToCol(2,card2);
+    }
+
+    public boolean loses (){
+        return hostGame.colScore(2)>21;
     }
 
     public void play(){
-        int pos=0;
-        while(hostGame.ownership.get(pos).contentEquals(name) || pos<hostGame.ownership.size()){
-            pos++;
-        }
         Card theCard;
-        while(hostGame.colScore(pos)<17){
+        while(hostGame.colScore(2)<17){
             theCard=hostGame.drawCard();
-            hostGame.dealCardToCol(pos,theCard);
+            hostGame.dealCardToCol(2,theCard);
         }
     }
 
-    public Dealer(){
-        name="Dealer";
+    public Dealer(Game g){
+        hostGame=g;
     }
 
 }
