@@ -32,6 +32,8 @@ public class Dealer extends Player {
         cols=Cols;
         deck=Deck;
     }
-    public Dealer (){}
+    public Dealer (){
+        //NEVER DELETE THIS
+    }
 
 }

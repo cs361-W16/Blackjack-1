@@ -81,30 +81,6 @@
         </table>
     </div>
     <script>
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
-
-
 
 var game;
 
@@ -112,20 +88,15 @@ function display(game) {
 console.log(game);
 
 $( '.columnOfCards .cardLocation' ).html("");
-
     $.each(game.cols[0], function( key, val ) {
         $( '#c0 .l'+key ).html(val.value + val.suit);
     });
-
- $.each(game.cols[1], function( key, val ) {
+    $.each(game.cols[1], function( key, val ) {
         $( '#c1 .l'+key ).html(val.value + val.suit);
     });
-
- $.each(game.cols[2], function( key, val ) {
+    $.each(game.cols[2], function( key, val ) {
         $( '#c2 .l'+key ).html(val.value + val.suit);
     });
-
-
  document.getElementById("cash").innerHTML = game.totalCash;
  document.getElementById("errorCode").innerHTML = game.errorCode;
  document.getElementById("errorCode").style.color = "red";
@@ -136,24 +107,6 @@ $.getJSON("http://localhost:8080/game", function( data ) {
 display(data);
 game = data;
 });
-
-
-
-
-function changeMode(modeNum){
-$.ajax({
-type: "POST",
-url: "/chMode/"+modeNum,
-data: JSON.stringify(game),
-success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
-game = data;
-display(data);},
-contentType:"application/json; charset=utf-8",
-dataType:"json",
-});
-
-}
-
 
 function hitClick(){
 var theCol = document.getElementById("hitCol").value;

@@ -26,6 +26,8 @@ public class Game implements Serializable {
     public String errorCode;
 
     public Game() {
+        buildDeck();
+        shuffle();
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
         cols.add(new ArrayList<Card>());
@@ -41,12 +43,13 @@ public class Game implements Serializable {
         java.util.List<java.util.List<Card>> dealerCols = new ArrayList<>();
         java.util.List<Card> dealerDeck = new ArrayList<>();
         userCols.add(cols.get(2));
-        userDeck=deck;
+        dealerDeck=deck;
 
         theDealer=new Dealer(dealerCols,dealerDeck);
 
         ante = 2;
-        errorCode = "BLUH";
+        theUser.initialDeal();
+        //theDealer.initialDeal();
     }
 
 
@@ -68,15 +71,15 @@ public class Game implements Serializable {
 
 
 
-    public String getCardFromURL(Card card) {
+    /*public String getCardFromURL(Card card) {
         String URL = "https://raw.githubusercontent.com/cs361-W16/Blackjack-1/master/src/main/java/assets/images/";
         int tempV = card.getValue();
         String tempS = determineSuit(card);
         URL = URL + tempV + "of" + tempS + ".png";
         return URL;
-    }
+    }*/
 
-    String determineSuit(Card card) {
+    /*String determineSuit(Card card) {
         if (card.getSuit() == Suit.Clubs) {
             return "Clubs";
         } else if (card.getSuit() == Suit.Hearts) {
@@ -89,7 +92,7 @@ public class Game implements Serializable {
         else
             System.out.println("Unable to determine suit");
         return "";
-    }
+    }*/
     public boolean isPlayerWin(int theCol) {
 
         if (isStay && (theUser.colScore(theCol) <= 21 && theUser.colScore(theCol)  > theDealer.colScore(0))) {

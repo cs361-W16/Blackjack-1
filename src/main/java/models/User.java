@@ -50,11 +50,11 @@ public class User extends Player implements Serializable{
             //isBusted = false;
 
         }
-        else { //else deal a card
-            Card newCard =  drawCard();
-             dealCardToCol(col,newCard);
-            didBet = false;
-        }
+         //else deal a card
+        Card newCard =  drawCard();
+        dealCardToCol(col,newCard);
+        didBet = false;
+
          return " ";
 
     }
@@ -134,7 +134,9 @@ public class User extends Player implements Serializable{
         zeroStayed=false;
     }
 
-    public User(){}
+    public User(){
+        //NEVER DELETE THIS
+    }
 
 
 }
