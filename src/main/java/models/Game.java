@@ -17,14 +17,10 @@ public class Game implements Serializable {
     public User theUser;
     public Dealer theDealer;
 
-    public int pot;
     public int ante;
     public int totalCash=100;
-    public boolean playerWin;
-    public int bet;
+    public boolean playerWin = false;
     public boolean isStay;
-    public boolean didBet;
-
 
     public String errorCode;
 
@@ -93,22 +89,32 @@ public class Game implements Serializable {
             System.out.println("Unable to determine suit");
         return "";
     }
+    public boolean isPlayerWin(int theCol) {
 
+        if (isStay && (theUser.colScore(theCol) <= 21 && theUser.colScore(theCol)  > theDealer.colScore(0))) {
+            return true;
+        } else
+            return false;
+    }
+    public int userBet(int bet, int theCol) {
+        playerWin = isPlayerWin(theCol);
+        if(theUser.didBet == true){
+            return totalCash;
+        }
+        else if (playerWin) {
+            totalCash += bet;
+            theUser.didBet = true;
+            return totalCash;
+        } else {
+            totalCash -= bet;
+            theUser.didBet = true;
+            return totalCash;
+        }
+    }
 
     public void newGame() {
 
     }
 
-    public boolean isPlayerWin() {
-
-        if ( isStay && (
-                        (theUser.colScore(0)<=21 && theUser.colScore(0) > theDealer.colScore(0)) ||
-                        (theUser.colScore(1)<=21 && theUser.colScore(1) > theDealer.colScore(0)))
-                        ) {
-            return true;
-        }
-        else
-            return false;
-    }
 
 }

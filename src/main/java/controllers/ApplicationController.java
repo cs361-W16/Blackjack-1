@@ -69,8 +69,8 @@ public class ApplicationController {
         return Results.json().render(g);
     }
 
-    public Result userBet(Context context, @PathParam("bet") int stakeInPot, Game g){
-        g.bet = stakeInPot;
+    public Result betPost(Context context, @PathParam("theCol") int column, @PathParam("theAmnt") int amount, Game g){
+        g.userBet(amount,column);
         g.errorCode="Tried to bet";
         return Results.json().render(g);
     }

@@ -52,4 +52,6 @@ abstract public class Player implements Serializable{
         return theScore;
     }
 
+    public Player(){}
+
 }

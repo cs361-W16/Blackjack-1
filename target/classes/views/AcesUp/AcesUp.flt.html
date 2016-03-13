@@ -72,7 +72,7 @@
                 <td><button id="ddown" onClick="ddownClick()">DOUBLE DOWN</button><BR><input type="text" id="ddownCol"></td>
                 <td><button id="split" onClick="splitClick()">SPLIT</button></td>
                 <td><button id="stay" onClick="stayClick()">STAY</button><BR><input type="text" id="stayCol"></td>
-                <td><button id="userBet" onclick="betClick()">BET</button><BR><input type="text" id="betCol"></td>
+                <td><button id="userBet" onclick="betClick()">BET</button><BR><input type="text" id="betCol"></button><BR><input type="text" id="betAmnt"></td>
             </tr>
             <tr>
                 <td>Blackjack Simulator 1.0</td>
@@ -172,9 +172,10 @@ $.ajax({
 
 function betClick(){
 var theBet = document.getElementById("betCol").value;
+var theAmnt = document.getElementById("betAmnt").value;
 $.ajax({
     type: "POST",
-    url: "/bet/"+theBet,
+    url: "/bet/"+theBet+"/"+theAmnt,
     data: JSON.stringify(game),
     success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
         game = data;
