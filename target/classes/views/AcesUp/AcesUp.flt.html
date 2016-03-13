@@ -67,15 +67,17 @@
                 </td>
             </tr>
             <tr class="menuDes">
-                <td>Cash:<textarea id="userWallet" disabled="true" width></textarea></td>
-                <td><button id="hit" onclick="HitFunction" class="menuButton">HIT</button><BR><input type="text" id="hitCol"></td>
-                <td><button id="ddown" onclick="DoubleDownFunction" class="menuButton">DOUBLE DOWN</button></td>
-                <td><button id="split" onclick="SplitFunction" class="menuButton">SPLIT</button></td>
-                <td><button id="stay" onclick="StayFunction" class="menuButton">STAY</button></td>
-                <td><button id="betting" onclick = "userBet">BET</button><BR><input type="text" id="bet"></td>
-                <td><button id="deal" onclick = "dealButton">DEAL</button><td>
+                <td>Cash:<div id="cash" style="background-color:black; color:white; padding:20px;">100</div></td>
+                <td><button id="hit" onclick="hitClick()">HIT</button><BR><input type="text" id="hitCol"></td>
+                <td><button id="ddown" onClick="ddownClick()">DOUBLE DOWN</button><BR><input type="text" id="ddownCol"></td>
+                <td><button id="split" onClick="splitClick()">SPLIT</button></td>
+                <td><button id="stay" onClick="stayClick()">STAY</button><BR><input type="text" id="stayCol"></td>
+                <td><button id="userBet" onclick="betClick()">BET</button><BR><input type="text" id="betCol"></td>
             </tr>
-            <tr><td>Blackjack Simulator 1.0</td></tr>
+            <tr>
+                <td>Blackjack Simulator 1.0</td>
+                <td id="errorCode"> </td>
+            </tr>
         </table>
     </div>
     <script>
@@ -123,9 +125,7 @@ $( '.columnOfCards .cardLocation' ).html("");
         $( '#c2 .l'+key ).html(val.value + val.suit);
     });
 
- $.each(game.cols[3], function( key, val ) {
-        $( '#c3 .l'+key ).html(val.value + val.suit);
-    });
+
  document.getElementById("cash").innerHTML = game.totalCash;
  document.getElementById("errorCode").innerHTML = game.errorCode;
  document.getElementById("errorCode").style.color = "red";
@@ -154,8 +154,9 @@ dataType:"json",
 
 }
 
-$("#hit").click(function(){
-var theCol = $("hitCol").val();
+
+function hitClick(){
+var theCol = document.getElementById("hitCol").value;
 $.ajax({
   type: "POST",
   url: "/hit/"+theCol,
@@ -166,20 +167,62 @@ $.ajax({
   contentType:"application/json; charset=utf-8",
   dataType:"json",
 });
-});
+}
 
 
-$("#userBet").click(function(){
-var bet = $("bet").val();
+function betClick(){
+var theBet = document.getElementById("betCol").value;
 $.ajax({
-type: "POST",
-url: "/userBet/"+bet,
-data: JSON.stringify(game),
-success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
-game = data;
-display(data);},
-contentType:"application/json; charset=utf-8",
-dataType:"json",
+    type: "POST",
+    url: "/bet/"+theBet,
+    data: JSON.stringify(game),
+    success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
+        game = data;
+        display(data);},
+    contentType:"application/json; charset=utf-8",
+    dataType:"json",
+});
+}
+
+
+function ddownClick(){
+var theCol = document.getElementById("ddownCol").value;
+$.ajax({
+  type: "POST",
+  url: "/ddown/"+theCol,
+  data: JSON.stringify(game),
+  success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
+        game = data;
+        display(data);},
+  contentType:"application/json; charset=utf-8",
+  dataType:"json",
+});
+}
+
+function splitClick(){
+$.ajax({
+  type: "POST",
+  url: "/split",
+  data: JSON.stringify(game),
+  success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
+        game = data;
+        display(data);},
+  contentType:"application/json; charset=utf-8",
+  dataType:"json",
+});
+}
+
+function stayClick(){
+var theCol = document.getElementById("stayCol").value;
+$.ajax({
+  type: "POST",
+  url: "/stay/"+theCol,
+  data: JSON.stringify(game),
+  success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
+        game = data;
+        display(data);},
+  contentType:"application/json; charset=utf-8",
+  dataType:"json",
 });
 }
 

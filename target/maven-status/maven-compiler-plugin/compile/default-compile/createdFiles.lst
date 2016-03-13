@@ -1,0 +1,9 @@
+controllers\ApplicationController.class
+conf\Routes.class
+models\Dealer.class
+models\User.class
+models\Player.class
+models\Suit.class
+models\Card.class
+conf\Module.class
+models\Game.class
