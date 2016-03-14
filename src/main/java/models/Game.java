@@ -15,6 +15,8 @@ public class Game implements Serializable {
     public java.util.List<java.util.List<Card>> cols = new ArrayList<>();
 
     public User theUser;
+    public String user1State;
+    public String user2State;
     public Dealer theDealer;
 
     public int ante;
@@ -26,6 +28,10 @@ public class Game implements Serializable {
     public String errorCode;
 
     public Game() {
+
+        user1State=" ";
+        user2State=" ";
+
         buildDeck();
         shuffle();
         cols.add(new ArrayList<Card>());
@@ -42,16 +48,68 @@ public class Game implements Serializable {
 
         java.util.List<java.util.List<Card>> dealerCols = new ArrayList<>();
         java.util.List<Card> dealerDeck = new ArrayList<>();
-        userCols.add(cols.get(2));
+        dealerCols.add(cols.get(2));
         dealerDeck=deck;
 
         theDealer=new Dealer(dealerCols,dealerDeck);
 
         ante = 2;
         theUser.initialDeal();
-        //theDealer.initialDeal();
+        theDealer.initialDeal();
     }
 
+    public void reload(){
+        cols.set(0,theUser.cols.get(0));
+        cols.set(1,theUser.cols.get(1));
+        cols.set(2,theDealer.cols.get(0));
+    }
+
+    public void judge(){
+        if(theDealer.done){
+            int zeroBet;
+            if (theUser.doublezero){
+                zeroBet=4;
+            }
+            else{
+                zeroBet=2;
+            }
+            int oneBet;
+            if (theUser.doubleone){
+                oneBet=4;
+            }
+            else{
+                oneBet=2;
+            }
+            if(theUser.isBusted(0) ){
+                user1State="LOSE";
+                totalCash-=zeroBet;
+            }
+            else if(theUser.colScore(0)<=theDealer.colScore(0)){
+                user1State="LOSE";
+                totalCash-=zeroBet;
+            }
+            else{
+                user1State="WIN";
+                totalCash+=zeroBet;
+            }
+
+            if (theUser.cols.get(1).size()==0){
+                user2State=" ";
+            }
+            else if(theUser.isBusted(1) ){
+                user1State="LOSE";
+                totalCash-=oneBet;
+            }
+            else if(theUser.colScore(1)<=theDealer.colScore(0)){
+                user2State="LOSE";
+                totalCash-=oneBet;
+            }
+            else{
+                user2State="WIN";
+                totalCash+=oneBet;
+            }
+        }
+    }
 
     public void buildDeck() {
         for (int i = 1; i < 14; i++) {
@@ -101,25 +159,38 @@ public class Game implements Serializable {
         } else
             return false;
     }
-    public int userBet(int bet, int theCol) {
-        playerWin = isPlayerWin(theCol);
-        if(theUser.didBet == true){
-            return totalCash;
-        }
-        else if (playerWin) {
-            totalCash += pot;
-            theUser.didBet = true;
-            return totalCash;
-        } else {
-            totalCash -= bet;
-            pot += bet*2;
-            theUser.didBet = true;
-            return totalCash;
-        }
-    }
 
-    public void newGame() {
+    public void newGame(){
 
+        user1State=" ";
+        user2State=" ";
+
+        deck.clear();
+        buildDeck();
+        shuffle();
+        cols.get(0).clear();
+        cols.get(1).clear();
+        cols.get(2).clear();
+
+
+        java.util.List<java.util.List<Card>> userCols = new ArrayList<>();
+        java.util.List<Card> userDeck = new ArrayList<>();
+        userCols.add(cols.get(0));
+        userCols.add(cols.get(1));
+        userDeck=deck;
+
+        theUser=new User(userCols,userDeck);
+
+        java.util.List<java.util.List<Card>> dealerCols = new ArrayList<>();
+        java.util.List<Card> dealerDeck = new ArrayList<>();
+        dealerCols.add(cols.get(2));
+        dealerDeck=deck;
+
+        theDealer=new Dealer(dealerCols,dealerDeck);
+
+        ante = 2;
+        theUser.initialDeal();
+        theDealer.initialDeal();
     }
 
 
