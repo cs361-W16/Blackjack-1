@@ -46,8 +46,10 @@ public class ApplicationController {
     }
 
     public Result hitPost(Context context,  @PathParam("theCol") int theCol, Game g) {
-        g.theUser.hit(theCol);
-        g.errorCode="Tried to Hit";
+
+            g.theUser.hit(theCol);
+            g.errorCode = "Tried to Hit column " + Integer.toString(theCol);
+
         return Results.json().render(g);
     }
 

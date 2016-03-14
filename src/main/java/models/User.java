@@ -36,6 +36,7 @@ public class User extends Player implements Serializable{
     }
 
     public String hit(int col){
+
         if(col<0 || col>1) {
             return "Invalid column";
         }
@@ -55,7 +56,7 @@ public class User extends Player implements Serializable{
         dealCardToCol(col,newCard);
         didBet = false;
 
-         return " ";
+         return "hit function";
 
     }
 
