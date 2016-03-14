@@ -32,6 +32,7 @@
                         <tr><td class="cardLocation l8"></td></tr>
                         <tr><td class="cardLocation l9"></td></tr>
                         <tr><td class="cardLocation l10"></td></tr>
+                        <td id="player1"> </td>
                     </table>
                 </td>
                 <td class="columnOfCards" id="userSplit">
@@ -47,6 +48,7 @@
                         <tr><td class="cardLocation l8"></td></tr>
                         <tr><td class="cardLocation l9"></td></tr>
                         <tr><td class="cardLocation l10"></td></tr>
+                        <td id="player2"> </td>
                     </table>
                 </td>
                 <td class="columnOfCards"></td>
@@ -72,7 +74,7 @@
                 <td><button id="ddown" onClick="ddownClick()">DOUBLE DOWN</button><BR><input type="text" id="ddownCol"></td>
                 <td><button id="split" onClick="splitClick()">SPLIT</button></td>
                 <td><button id="stay" onClick="stayClick()">STAY</button><BR><input type="text" id="stayCol"></td>
-                <td><button id="userBet" onclick="betClick()">BET</button><BR><input type="text" id="betCol"></button><BR><input type="text" id="betAmnt"></td>
+                <td><button id="newRound" onClick="newClick()">NEW ROUND</button></td>
             </tr>
             <tr>
                 <td>Blackjack Simulator 1.0</td>
@@ -100,6 +102,10 @@ $( '.columnOfCards .cardLocation' ).html("");
  document.getElementById("cash").innerHTML = game.totalCash;
  document.getElementById("errorCode").innerHTML = game.errorCode;
  document.getElementById("errorCode").style.color = "red";
+ document.getElementById("player1").innerHTML = game.user1State;
+ document.getElementById("player1").style.color = "red";
+ document.getElementById("player2").innerHTML = game.user2State;
+ document.getElementById("player2").style.color = "red";
 
 }
 
@@ -168,6 +174,21 @@ $.ajax({
   dataType:"json",
 });
 }
+
+
+function newClick(){
+$.ajax({
+  type: "POST",
+  url: "/newgame",
+  data: JSON.stringify(game),
+  success: function(data, status){console.log("Data: " + data + "\nStatus: " + status);
+        game = data;
+        display(data);},
+  contentType:"application/json; charset=utf-8",
+  dataType:"json",
+});
+}
+
 
 function stayClick(){
 var theCol = document.getElementById("stayCol").value;

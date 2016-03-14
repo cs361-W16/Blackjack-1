@@ -14,6 +14,8 @@ public class User extends Player implements Serializable{
 
     public Boolean zeroStayed=false;
     public Boolean oneStayed=false;
+    public Boolean doublezero=false;
+    public Boolean doubleone=false;
     public Boolean isSplit = false;
     public boolean didBet = false;
     public int cardValue;
@@ -38,6 +40,10 @@ public class User extends Player implements Serializable{
     public String hit(int col){
 
         if(col<0 || col>1) {
+            return "Invalid column";
+        }
+
+        if(col==1 && !isSplit){
             return "Invalid column";
         }
 
@@ -80,11 +86,31 @@ public class User extends Player implements Serializable{
         return " ";
     }
 
-    public int doubleDown(int moneyOnBet){
-        int newMoney = 0;
-        newMoney = moneyOnBet *2;   //double the money on bet
-
-        return newMoney;
+    public String doubleDown(int theCol){
+        if(theCol==0){
+            if(doublezero || zeroStayed || isBusted(0)){
+                return "Cannot Double Down";
+            }
+            else{
+                doublezero=true;
+                hit(0);
+                stay(0);
+            }
+        }
+        else if(theCol==1 && isSplit){
+            if(doubleone || oneStayed || isBusted(1) || !isSplit){
+                return "Cannot Double Down";
+            }
+            else{
+                doubleone=true;
+                hit(1);
+                stay(1);
+            }
+        }
+        else{
+            return "Invalid Column";
+        }
+        return " ";
     }
 
     public String split(){
@@ -105,7 +131,7 @@ public class User extends Player implements Serializable{
 
             //if both cards has the same value and user has not split yet (can only split once)
 
-            if ( val1==val2 || !zeroStayed  || !oneStayed || !isSplit) {
+            if ( val1==val2 && !zeroStayed  && !oneStayed && !isSplit) {
 
                  dealCardToCol(1, cols.get(0).get(1));     //add 2nd card to col 1
                  cols.get(0).remove(1);              //remove 2nd card from col

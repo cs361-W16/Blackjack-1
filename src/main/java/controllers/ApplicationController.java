@@ -47,33 +47,41 @@ public class ApplicationController {
 
     public Result hitPost(Context context,  @PathParam("theCol") int theCol, Game g) {
 
-            g.theUser.hit(theCol);
-            g.errorCode = "Tried to Hit column " + Integer.toString(theCol);
+        g.errorCode = g.theUser.hit(theCol);
+        g.theDealer.autoplay(g.theUser);
+        g.judge();
+        g.reload();
 
         return Results.json().render(g);
     }
 
     public Result stayPost(Context context,  @PathParam("theCol") int theCol, Game g) {
-        g.theUser.stay(theCol);
-        g.errorCode="Tried to Stay";
+        g.errorCode = g.theUser.stay(theCol);
+        g.theDealer.autoplay(g.theUser);
+        g.judge();
+        g.reload();
         return Results.json().render(g);
     }
 
     public Result ddownPost(Context context,  @PathParam("theCol") int theCol, Game g) {
-        //g.theUser.doubleDown(theCol);
-        g.errorCode="Tried to double down";
+        g.errorCode=g.theUser.doubleDown(theCol);
+        g.theDealer.autoplay(g.theUser);
+        g.judge();
+        g.reload();
         return Results.json().render(g);
     }
 
     public Result splitPost(Context context, Game g) {
-        g.theUser.split();
-        g.errorCode="Tried to split";
+        g.errorCode = g.theUser.split();
+        g.theDealer.autoplay(g.theUser);
+        g.judge();
+        g.reload();
         return Results.json().render(g);
     }
 
-    public Result betPost(Context context, @PathParam("theCol") int column, @PathParam("theAmnt") int amount, Game g){
-        g.userBet(amount,column);
-        g.errorCode="Tried to bet";
+    public Result newgamePost(Context context, Game g) {
+        g.newGame();
+        g.reload();
         return Results.json().render(g);
     }
 
