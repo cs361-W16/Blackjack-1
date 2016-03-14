@@ -84,7 +84,7 @@ public class Game implements Serializable {
                 user1State="LOSE";
                 totalCash-=zeroBet;
             }
-            else if(theUser.colScore(0)<=theDealer.colScore(0)){
+            else if(theUser.colScore(0)<=theDealer.colScore(0) && theDealer.colScore(0)<=21){
                 user1State="LOSE";
                 totalCash-=zeroBet;
             }
@@ -100,7 +100,7 @@ public class Game implements Serializable {
                 user1State="LOSE";
                 totalCash-=oneBet;
             }
-            else if(theUser.colScore(1)<=theDealer.colScore(0)){
+            else if(theUser.colScore(1)<=theDealer.colScore(0) && theDealer.colScore(0)<=21){
                 user2State="LOSE";
                 totalCash-=oneBet;
             }
