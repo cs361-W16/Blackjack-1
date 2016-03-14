@@ -126,40 +126,6 @@ public class Game implements Serializable {
     }
 
 
-    //customDeal to setup game for testing purposes
-
-
-
-    /*public String getCardFromURL(Card card) {
-        String URL = "https://raw.githubusercontent.com/cs361-W16/Blackjack-1/master/src/main/java/assets/images/";
-        int tempV = card.getValue();
-        String tempS = determineSuit(card);
-        URL = URL + tempV + "of" + tempS + ".png";
-        return URL;
-    }*/
-
-    /*String determineSuit(Card card) {
-        if (card.getSuit() == Suit.Clubs) {
-            return "Clubs";
-        } else if (card.getSuit() == Suit.Hearts) {
-            return "Hearts";
-        } else if (card.getSuit() == Suit.Diamonds) {
-            return "Diamonds";
-        } else if (card.getSuit() == Suit.Spades) {
-            return "Spades";
-        }
-        else
-            System.out.println("Unable to determine suit");
-        return "";
-    }*/
-    public boolean isPlayerWin(int theCol) {
-
-        if (isStay && (theUser.colScore(theCol) <= 21 && theUser.colScore(theCol)  > theDealer.colScore(0))) {
-            return true;
-        } else
-            return false;
-    }
-
     public void newGame(){
 
         user1State=" ";
