@@ -16,10 +16,6 @@ abstract public class Player implements Serializable{
 
     abstract public boolean loses();
 
-    private boolean colHasCards(int colNumber) {
-        return this.cols.get(colNumber).size() > 0;
-    }
-
     public void dealCardToCol(int colTo, Card cardToDeal) {
         cols.get(colTo).add(cardToDeal);
     }
