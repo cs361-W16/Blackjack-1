@@ -30,7 +30,6 @@ public class testGame {
     public void testInitialDeal() {
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
         u.initialDeal();
 
         assertEquals(2, g.cols.get(0).size());
@@ -40,7 +39,7 @@ public class testGame {
     public void testColSizeAfterHit(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         g.cols.add(new ArrayList<Card>());
         u.hit(0);
 
@@ -51,7 +50,7 @@ public class testGame {
     public void testisStayForHit() {
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         g.cols.add(new ArrayList<Card>());
         u.zeroStayed = true;
         u.hit(0);
@@ -63,14 +62,14 @@ public class testGame {
     public void testisStayAfterBusted() {
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(10, Suit.Clubs, true);
         Card card2 = new Card(10, Suit.Diamonds, true);
         Card card3 = new Card(10, Suit.Hearts, true);
         g.cols.add(new ArrayList<Card>());
-        g.dealCardToCol(0,card1);
-        g.dealCardToCol(0,card2);
-        g.dealCardToCol(0,card3);
+        u.dealCardToCol(0, card1);
+        u.dealCardToCol(0, card2);
+        u.dealCardToCol(0, card3);
         //g.colScore(0);
         u.hit(0);
 
@@ -81,12 +80,12 @@ public class testGame {
     public void testHitFor3rdCol() {
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(10, Suit.Clubs, true);
         Card card2 = new Card(10, Suit.Diamonds, true);
         g.cols.add(new ArrayList<Card>());
-        g.dealCardToCol(3,card1);
-        g.dealCardToCol(3,card2);
+        u.dealCardToCol(0, card1);
+        u.dealCardToCol(0, card2);
 
         u.hit(3);
 
@@ -97,12 +96,12 @@ public class testGame {
     public void testStay(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(8, Suit.Clubs, true);
         Card card2 = new Card(10, Suit.Diamonds, true);
         g.cols.add(new ArrayList<Card>());
-        g.dealCardToCol(0,card1);
-        g.dealCardToCol(0,card2);
+        u.dealCardToCol(0,card1);
+        u.dealCardToCol(0,card2);
         u.stay(0);
 
         assertEquals(true, u.zeroStayed);
@@ -112,12 +111,12 @@ public class testGame {
     public void testNotStay(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(8, Suit.Clubs, true);
         Card card2 = new Card(10, Suit.Diamonds, true);
         g.cols.add(new ArrayList<Card>());
-        g.dealCardToCol(0,card1);
-        g.dealCardToCol(0,card2);
+        u.dealCardToCol(0,card1);
+        u.dealCardToCol(0,card2);
         u.stay(3);
 
         assertEquals(false, u.zeroStayed);
@@ -127,14 +126,14 @@ public class testGame {
     public void testStayForBusted(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(10, Suit.Clubs, true);
         Card card2 = new Card(10, Suit.Diamonds, true);
         Card card3 = new Card(10, Suit.Hearts, true);
         g.cols.add(new ArrayList<Card>());
-        g.dealCardToCol(0,card1);
-        g.dealCardToCol(0,card2);
-        g.dealCardToCol(0,card3);
+        u.dealCardToCol(0,card1);
+        u.dealCardToCol(0,card2);
+        u.dealCardToCol(0,card3);
         //g.colScore(0);
         u.stay(0);
 
@@ -145,12 +144,12 @@ public class testGame {
     public void testStayFor0ColBusted(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(10, Suit.Clubs, true);
         Card card2 = new Card(10, Suit.Diamonds, true);
         g.cols.add(new ArrayList<Card>());
-        g.dealCardToCol(0,card1);
-        g.dealCardToCol(0,card2);
+        u.dealCardToCol(0,card1);
+        u.dealCardToCol(0,card2);
         //g.colScore(0);
         u.stay(0);
 
@@ -161,12 +160,12 @@ public class testGame {
     public void testStayFor1ColBusted(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(10, Suit.Clubs, true);
         Card card2 = new Card(10, Suit.Diamonds, true);
         g.cols.add(new ArrayList<Card>());
-        g.dealCardToCol(1,card1);
-        g.dealCardToCol(1,card2);
+        u.dealCardToCol(1,card1);
+        u.dealCardToCol(1,card2);
         //g.colScore(0);
         u.stay(1);
 
@@ -177,7 +176,7 @@ public class testGame {
     public void testDoubleDown(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         int result = u.doubleDown(20);
 
         assertEquals(40, result);
@@ -187,11 +186,11 @@ public class testGame {
     public void testSplit(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(8, Suit.Clubs, true);
         Card card2 = new Card(8, Suit.Diamonds, true);
-        g.dealCardToCol(0, card1);
-        g.dealCardToCol(0, card2);
+        u.dealCardToCol(0, card1);
+        u.dealCardToCol(0, card2);
         u.split();
 
         assertEquals(true, u.isSplit);
@@ -202,11 +201,11 @@ public class testGame {
     public void testNotSplit() {
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(8, Suit.Clubs, true);
         Card card2 = new Card(10, Suit.Diamonds, true);
-        g.dealCardToCol(0, card1);
-        g.dealCardToCol(0, card2);
+        u.dealCardToCol(0, card1);
+        u.dealCardToCol(0, card2);
         u.split();
 
         assertEquals(false, u.isSplit);
@@ -216,9 +215,9 @@ public class testGame {
     public void testSplitForOneCard(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(8, Suit.Clubs, true);
-        g.dealCardToCol(0, card1);
+        u.dealCardToCol(0, card1);
         u.split();
 
         assertEquals(false, u.isSplit);
@@ -228,13 +227,13 @@ public class testGame {
     public void testSplitWithOneCardIn2ndCol(){
         Game g = new Game();
         User u = new User();
-        u.hostGame = g;
+
         Card card1 = new Card(8, Suit.Clubs, true);
         Card card2 = new Card(9, Suit.Clubs, true);
         Card card3 = new Card(7, Suit.Clubs, true);
-        g.dealCardToCol(0, card1);
-        g.dealCardToCol(0, card2);
-        g.dealCardToCol(1, card3);
+        u.dealCardToCol(0, card1);
+        u.dealCardToCol(0, card2);
+        u.dealCardToCol(1, card3);
          u.split();
 
         assertEquals(false, u.isSplit);

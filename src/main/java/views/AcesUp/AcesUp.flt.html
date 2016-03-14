@@ -89,13 +89,13 @@ console.log(game);
 
 $( '.columnOfCards .cardLocation' ).html("");
     $.each(game.cols[0], function( key, val ) {
-        $( '#c0 .l'+key ).html(val.value + val.suit);
+        $( '#userHand .l'+key ).html(val.value + val.suit);
     });
     $.each(game.cols[1], function( key, val ) {
-        $( '#c1 .l'+key ).html(val.value + val.suit);
+        $( '#userSplit .l'+key ).html(val.value + val.suit);
     });
     $.each(game.cols[2], function( key, val ) {
-        $( '#c2 .l'+key ).html(val.value + val.suit);
+        $( '#dealerHand .l'+key ).html(val.value + val.suit);
     });
  document.getElementById("cash").innerHTML = game.totalCash;
  document.getElementById("errorCode").innerHTML = game.errorCode;
@@ -110,6 +110,8 @@ game = data;
 
 function hitClick(){
 var theCol = document.getElementById("hitCol").value;
+window.alert(theCol);
+
 $.ajax({
   type: "POST",
   url: "/hit/"+theCol,
@@ -141,6 +143,7 @@ $.ajax({
 
 function ddownClick(){
 var theCol = document.getElementById("ddownCol").value;
+
 $.ajax({
   type: "POST",
   url: "/ddown/"+theCol,
